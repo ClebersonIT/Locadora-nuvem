@@ -1,23 +1,24 @@
 import "./globals.css";
-import { Header } from '../components/header';
+import { Header } from "../components/header";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: 'Home - Locadora de Veículos',
-  description: 'Controlar cadastro de veículos!', 
-  openGraph:{
-    title: 'Home - Locadora de Veículos',
+  title: "Locadora de Veículos",
+  description: "Controlar cadastro de veículos!",
+  openGraph: {
+    title: "Locadora de Veículos",
   },
-  robots:{
+  robots: {
     index: true,
     follow: true,
     nocache: true,
     googleBot: {
       index: true,
       follow: true,
-    }
-  }
-}
+    },
+  },
+};
 
 export default function RootLayout({
   children,
@@ -26,12 +27,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-
-        className={`antialiased`}
-      >
-        <Header/>
-        {children}
+      <body className={`antialiased`}>
+        <Suspense
+          fallback={
+            <div className="animate-pulse w-full flex justify-center items-center">
+              Carregando...
+            </div>
+          }
+        >
+          <Header />
+          {children}
+        </Suspense>
       </body>
     </html>
   );
