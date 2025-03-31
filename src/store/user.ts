@@ -16,7 +16,7 @@ export const useUser = create<useUserProps>()(
         username: "",
         email: "",
         name: "",
-        passsword: "",
+        password: "",
         isLogged: false,
       },
       setData: (user) => set({ data: user }),
