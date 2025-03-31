@@ -2,6 +2,8 @@ import "./globals.css";
 import { Header } from "../components/header";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { Provider } from "@/components/provider";
+import ProtectedPage from "@/utils/authProvider";
 
 export const metadata: Metadata = {
   title: "Locadora de Veículos",
@@ -35,8 +37,10 @@ export default function RootLayout({
             </div>
           }
         >
-          <Header />
-          {children}
+          <Provider>
+            <Header />
+            <ProtectedPage>{children}</ProtectedPage>
+          </Provider>
         </Suspense>
       </body>
     </html>
