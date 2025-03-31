@@ -87,7 +87,7 @@ export default function VehicleTable() {
                 className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               >
                 <TableCell className="p-3 border border-gray-300">
-                  {vehicle.objectId}
+                  {vehicle.codigo}
                 </TableCell>
                 <TableCell className="p-3 border border-gray-300">
                   {vehicle.placa}
