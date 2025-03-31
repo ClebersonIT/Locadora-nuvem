@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@/store/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { UserService } from "@/service/user";
+import { toast } from "react-toastify";
 
 const loginSchema = z.object({
   username: z
@@ -33,19 +36,26 @@ export default function LoginPage() {
   const { handleSubmit, register, formState } = form;
   const { errors, isSubmitting } = formState;
 
-  const onSubmit = async (data: LoginFormValues) => {
-    console.log("Login data:", data);
-    // const user: User = {
+  const { mutate: doLogin } = useMutation({
+    mutationFn: (params: { username: string; password: string }) =>
+      UserService.login(params),
+    onSuccess(data, variables, context) {
+      setData({
+        username: variables.username,
+        passsword: variables.password,
+        email: "",
+        name: "",
+        isLogged: true,
+      });
+      router.push("/veiculos");
+    },
+    onError(error, variables, context) {
+      toast.warn("Ocorreu um erro ao logar, verifique suas credenciais");
+    },
+  });
 
-    // }
-    setData({
-      username: data.username,
-      passsword: data.password,
-      email: "test@",
-      name: "Lucas",
-      isLogged: true,
-    });
-    router.push("/veiculos");
+  const onSubmit = async (data: LoginFormValues) => {
+    doLogin({ username: data.username, password: data.password });
   };
 
   return (

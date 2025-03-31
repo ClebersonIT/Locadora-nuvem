@@ -6,6 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { UserService } from "@/service/user";
+import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   username: z
@@ -24,6 +28,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function RegisterUserPage() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -36,11 +41,20 @@ export default function RegisterUserPage() {
   const { handleSubmit, register, formState } = form;
   const { errors, isSubmitting } = formState;
 
-  const onSubmit = async (data: LoginFormValues) => {
-    console.log("Login data:", data);
-    // const user: User = {
+  const { mutate: createUser, isPending: creatingUser } = useMutation({
+    mutationFn: (params: User) => UserService.create(params),
+  });
 
-    // }
+  const onSubmit = async (data: LoginFormValues) => {
+    const { email, name, password, username } = data;
+    const user: User = {
+      name,
+      email,
+      passsword: password,
+      username,
+    };
+    createUser(user);
+    router.push("/login");
   };
 
   return (
@@ -99,8 +113,12 @@ export default function RegisterUserPage() {
                 </p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Cadastrando..." : "Cadastrar"}
+            <Button
+              type="submit"
+              className="w-full cursor-pointer"
+              disabled={isSubmitting || creatingUser}
+            >
+              {isSubmitting || creatingUser ? "Cadastrando..." : "Cadastrar"}
             </Button>
             <Link href="/login" className="w-full flex justify-center">
               Cancelar
