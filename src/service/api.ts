@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://parseapi.back4app.com/classes",
+  baseURL: "https://parseapi.back4app.com",
   timeout: 1000 * 5,
   headers: {
     "X-Parse-Application-Id": "89Q6qi2xZMfxfbTM4ifY52FhauYaQHdb8U9Vq81l",

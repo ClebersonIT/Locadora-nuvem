@@ -42,7 +42,7 @@ export default function LoginPage() {
     onSuccess(data, variables, context) {
       setData({
         username: variables.username,
-        passsword: variables.password,
+        password: variables.password,
         email: "",
         name: "",
         isLogged: true,

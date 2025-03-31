@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { UserService } from "@/service/user";
 import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const loginSchema = z.object({
   username: z
@@ -43,6 +44,13 @@ export default function RegisterUserPage() {
 
   const { mutate: createUser, isPending: creatingUser } = useMutation({
     mutationFn: (params: User) => UserService.create(params),
+    onSuccess(data, variables, context) {
+      toast.success("Usuário criado");
+      router.push("/login");
+    },
+    onError(error, variables, context) {
+      toast.warn("Ocorreu um erro ao criar usuário");
+    },
   });
 
   const onSubmit = async (data: LoginFormValues) => {
@@ -50,11 +58,10 @@ export default function RegisterUserPage() {
     const user: User = {
       name,
       email,
-      passsword: password,
+      password,
       username,
     };
     createUser(user);
-    router.push("/login");
   };
 
   return (

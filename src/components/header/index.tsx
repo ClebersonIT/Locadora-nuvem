@@ -10,7 +10,7 @@ export function Header() {
       email: "",
       isLogged: false,
       name: "",
-      passsword: "",
+      password: "",
       username: "",
     });
   };
